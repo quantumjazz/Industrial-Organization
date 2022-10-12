@@ -1,0 +1,8 @@
+project:
+  title: "One"
+
+editor: visual
+
+execute:
+  freeze: auto
+

@@ -1,0 +1,111 @@
+---
+title: "Конкурентни предимства, пазарна структура и стратегическо позициониране"
+author: "Виктор Аврамов"
+format: revealjs
+---
+
+# Търсене, предлагане, видове разходи на фирмата, ценова еластичност
+
+## Търсене
+
+::: panel-tabset
+## Колко сме готови да платим?
+
+```{r echo=FALSE}
+library(tidyverse)
+library(knitr)
+demand <- tibble(количество = c(1, 2, 3, 4), цена = c(3, 1.5, 0.2, 0))
+kable(demand)
+```
+
+## Крива на търсене
+
+```{r echo=FALSE}
+price <- tibble(y = 1)
+demand <- tibble(x = c(1, 2, 3, 4, 5), y = c(3, 1.5, 0.2, 0, 0))
+ggplot(demand, aes(x = x, y = y, xend = 5, yend = 5)) + geom_step() + theme_bw() + labs(x = "количество", y = "цена") + theme(axis.title = element_text(size = 36), axis.text = element_text(size = 36))
+```
+:::
+
+## Потребителски излишък
+
+Освен да предвиждаме количеството, което ще бъде купено за дадена цена, можем да измерваме потребителския излишък.
+
+Нека пазарната цена бъде равна на 1. Потребителският излишък е разликата между цената, която потребителите са готови за платят и пазарната цена. Графично, това е площта между кривите на търсенето и цената.
+
+## Потребителски излишък
+
+```{r echo=FALSE}
+price <- tibble(y = 1)
+demand <- tibble(x = c(1, 2, 3, 4, 5), y = c(3, 1.5, 0.2, 0, 0))
+surplus <- tibble(x = c(1, 2, 3), y = c(3, 1.5, 1))
+ggplot(demand, aes(x = x, y = y, xend = 5, yend = 5)) + geom_step() + geom_line(aes(y = 1), color = "blue") + geom_rect(surplus,mapping = aes(xmin = x, xmax = lead(x), ymin = 1, ymax = y), alpha = 0.4) + theme_bw() + labs(x = "количество", y = "цена") + theme(axis.title = element_text(size = 36), axis.text = element_text(size = 36))
+```
+
+## По-сложен пример
+
+::: panel-tabset
+## Предлагане
+
+```{r echo=FALSE}
+library(kableExtra)
+supply <- tibble(количество = c(2000, 2600, 3200, 3900, 4200, 4500, 4800, 5000, 5500, 5850, 6000, 6200, 6500, 7000), цена = c(10, 35, 50, 55, 58, 60, 62, 70, 75, 80, 110, 135, 180, 220))
+kable(supply) %>% scroll_box(width = "600px", height = "800px")
+```
+
+## Търсене
+
+```{r echo=FALSE}
+demand <- tibble(количество = c(2000, 2600, 3200, 3900, 4200, 4500, 4800, 5000, 5500, 5850, 6000, 6200, 6500, 7000), цена = c(200, 195, 150, 145, 128, 100, 80, 75, 70, 60, 55, 40, 30, 10))
+kable(demand) %>% scroll_box(width = "600px", height = "800px")
+```
+
+## Фигура
+
+```{r echo=FALSE}
+ggplot() + geom_step(demand, mapping = aes(x = `количество`, y = `цена`, color = "търсене")) + geom_step(supply, mapping =  aes(x = `количество`, y = `цена`, color = "предлагане")) + theme_bw() + theme(axis.title = element_text(size = 36), axis.text = element_text(size = 36)) + theme(legend.title = element_blank(), legend.text=element_text(size=24), legend.position="top")
+```
+:::
+
+## Можем да създадем функции
+
+::: panel-tabset
+## Търсене
+
+```{r echo=FALSE}
+library(ggpmisc)
+ggplot(demand, mapping = aes(x = `количество`, y = `цена`)) + geom_point() +   
+    stat_poly_line(formula = y ~ poly(x, 1, raw = TRUE)) +
+  stat_poly_eq(formula = y ~ poly(x, 1, raw = TRUE),
+               aes(label = after_stat(eq.label))) + theme_bw() + theme(axis.title = element_text(size = 36), axis.text = element_text(size = 36))
+```
+
+## Предлагане
+
+```{r echo=FALSE}
+library(ggpmisc)
+ggplot(supply, mapping = aes(x = `количество`, y = `цена`)) + geom_point() +   
+    stat_poly_line(formula = y ~ poly(x, 1, raw = TRUE)) +
+  stat_poly_eq(formula = y ~ poly(x, 1, raw = TRUE),
+               aes(label = after_stat(eq.label))) + theme_bw() + theme(axis.title = element_text(size = 36), axis.text = element_text(size = 36))
+```
+:::
+
+## Или, всичко дотук
+
+```{r echo=FALSE}
+demand_fun <- function(x) 284 - 0.0393 * x
+supply_fun <- function(x) y=-73.5 +0.0331 * x
+ggplot(data = tibble(x = c(0, 8000)), aes(x)) + geom_function(fun = demand_fun, aes(colour = "търсене")) + geom_function(fun = supply_fun, aes(colour = "предлагане")) + theme_bw() + theme(axis.title = element_text(size = 36), axis.text = element_text(size = 36)) + theme(legend.title = element_blank(), legend.text=element_text(size=24), legend.position="top") + labs(x = "количество", y = "цена")
+```
+## Видове разходи
+
+Сега можем да работим с данните, които имаме, за да видим кои са:
+
+::: {.incremental}
+- Фиксираните разходи
+- Вариращите разходи
+- Пълните разходи
+- Средните разходи
+- Пределните разходи
+:::
