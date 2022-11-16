@@ -7,3 +7,7 @@
 [Конкурентни предимства, пазарна структура и стратегическо позициониране](https://quantumjazz.github.io/Industrial-Organization/One/One#/title-slide)
 
 [Конкурентни предимства, пазарна структура и стратегическо позициониране - продължение](https://quantumjazz.github.io/Industrial-Organization/Two/Two#/title-slide)
+
+[Стратегическо взаимодействие: игри, стратегии, равновесие](https://quantumjazz.github.io/Industrial-Organization/Three/Three#/title-slide)
+
+[Модели на конкуренцията: Пазарен монопол и регулация](https://quantumjazz.github.io/Industrial-Organization/Four/Four#/title-slide)
